@@ -1,0 +1,4 @@
+repository "HakatonProject/HakatonProject@18967738022971@cloud"
+  path "/"
+    br "/main"
+    co "/main"
