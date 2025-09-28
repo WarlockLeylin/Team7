@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5b93548d15879429e9ef7414fee93a, type: 3}
+  m_Name: Knifes
+  m_EditorClassIdentifier: 
+  categoryName: "\u0425\u043E\u043B\u043E\u0434\u043D\u043E\u0435 \u043E\u0440\u0443\u0436\u0438\u0435"
+  categoryIcon: {fileID: 21300000, guid: 68308d684c9c4c046a200eaa84de7b4d, type: 3}
+  maxLevel: 5
+  currentLevel: 1
+  currentEXP: 0
+  expToNextLevel: 300
+  availableItems:
+  - itemName: "\u041A\u0435\u0440\u0430\u043C\u0431\u0438\u0442"
+    itemIcon: {fileID: 21300000, guid: 83bd755bad2047943b96032a42855afb, type: 3}
+    category: "\u041D\u043E\u0436\u0438"
+    requirements:
+    - materialName: "\u0416\u0435\u043B\u0435\u0437\u043E"
+      requiredAmount: 10
+    - materialName: "\u041C\u0435\u0434\u044C"
+      requiredAmount: 5
+    successChance: 80
+    criticalChance: 10
+    minCraftingLevel: 1
+  - itemName: "\u041E\u0445\u043E\u0442\u043D\u0438\u0447\u0438\u0439 \u043D\u043E\u0436"
+    itemIcon: {fileID: 21300000, guid: 6196b16b14794eb4f8102f7cdeae73ef, type: 3}
+    category: "\u041D\u043E\u0436\u0438"
+    requirements:
+    - materialName: "\u0416\u0435\u043B\u0435\u0437\u043E"
+      requiredAmount: 10
+    - materialName: "\u041C\u0435\u0434\u044C"
+      requiredAmount: 5
+    successChance: 80
+    criticalChance: 10
+    minCraftingLevel: 1

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// Структура для хранения данных миссии
 [System.Serializable]
 public struct ResourceRequirement
 {
@@ -16,11 +15,10 @@ public class Mission
     public float reward = 500f;
     public List<ResourceRequirement> requiredResources = new List<ResourceRequirement>();
     public Vector3 deliveryLocation;
-    // Инвентарь, который ЗАПРАШИВАЕТ ресурсы (Работодатель/NPC)
+    // Инвентарь работодателя
     public Inventory requesterInventory; 
-    // Инвентарь, который ВЫПОЛНЯЕТ миссию (Игрок)
+    // Инвентарь игрока
     [System.NonSerialized] public Inventory executorInventory; 
-    // NonSerialized, чтобы не пытался сохранить ссылку на игрока
 }
 
 public class MissionManager : MonoBehaviour
@@ -32,7 +30,6 @@ public class MissionManager : MonoBehaviour
         Active,         // Миссия активна (нужно доехать до DeliveryZone)
     }
 
-    // === ПЕРЕМЕННЫЕ ===
     public MissionState CurrentState { get; private set; } = MissionState.None;
 
     [Header("Waypoints")]
@@ -43,19 +40,14 @@ public class MissionManager : MonoBehaviour
 
     [Header("Данные Миссий")]
     public List<Mission> availableMissions = new List<Mission>();
-    [HideInInspector] public Mission activeMission; // Скрываем в Инспекторе
+    [HideInInspector] public Mission activeMission;
     
-    // Удалено: public float currentMoney = 0f; (Деньги лучше хранить в Inventory.cs)
-
-    // === МЕТОДЫ ===
 
     void Start()
     {
         missionDeliveryWaypoint?.SetActive(false);
         missionStartWaypoint?.SetActive(true);
 
-        // Если миссий нет, создаем тестовую, используя текущую позицию DeliveryZone
-        // Важно: Эта миссия будет доступна при старте, но без requesterInventory
         if (availableMissions.Count == 0 && missionDeliveryWaypoint != null)
         {
             availableMissions.Add(new Mission
@@ -63,12 +55,11 @@ public class MissionManager : MonoBehaviour
                 missionName = "Тестовая Доставка (Доска Миссий)",
                 reward = 750f,
                 deliveryLocation = missionDeliveryWaypoint.transform.position,
-                requesterInventory = null // Добавьте ссылку, если нужно
+                requesterInventory = null
             });
         }
     }
 
-    // Вызывается MissionStartWaypoint.cs, когда игрок заходит/выходит из зоны
     public void SetMissionAvailable(bool isAvailable)
     {
         if (CurrentState == MissionState.None || CurrentState == MissionState.Available)
@@ -77,7 +68,6 @@ public class MissionManager : MonoBehaviour
         }
     }
 
-    // Вызывается из UI (Mission Board), когда игрок выбирает миссию
     public void StartMission(Mission missionToStart)
     {
         if (CurrentState != MissionState.Available || missionToStart == null)
@@ -88,25 +78,17 @@ public class MissionManager : MonoBehaviour
         activeMission = missionToStart;
         CurrentState = MissionState.Active;
 
-        // Устанавливаем инвентарь ИСПОЛНИТЕЛЯ (игрока)
-        // Предполагаем, что Inventory.instance - это инвентарь игрока
         activeMission.executorInventory = Inventory.instance;
 
-        // 1. Деактивировать MissionBoard (Waypoint 2)
         missionStartWaypoint?.SetActive(false);
-
-        // 2. Активировать DeliveryZone и установить его позицию (Waypoint 3)
         missionDeliveryWaypoint?.SetActive(true);
-
 
         Debug.Log($"[Mission System] МИССИЯ {activeMission.missionName} АКТИВНА!");
 
-        // Скрываем курсор после выбора миссии
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    // Вызывается MissionDeliveryWaypoint.cs
     public void CompleteMission()
     {
         if (CurrentState != MissionState.Active || activeMission == null)
@@ -114,12 +96,9 @@ public class MissionManager : MonoBehaviour
             return;
         }
 
-
-        // Выдаем награду исполнителю (игроку)
         float reward = activeMission.reward;
         activeMission.executorInventory.AddMoney(reward);
 
-        // Передаем ресурсы заказчику (если есть)
         if (activeMission.requesterInventory != null)
         {
             foreach (var req in activeMission.requiredResources)
@@ -129,28 +108,20 @@ public class MissionManager : MonoBehaviour
         }
 
         availableMissions.Remove(activeMission);
-
-        // --- 3. Очистка и сброс состояния ---
-
-        // 1. Скрыть DeliveryZone
         missionDeliveryWaypoint?.SetActive(false);
 
-        // 2. Активировать MissionBoard для следующей миссии
         if (availableMissions.Count > 0)
         {
             missionStartWaypoint?.SetActive(true);
         }
 
         CurrentState = MissionState.None;
-        activeMission = null; // Освобождаем активную миссию
+        activeMission = null;
 
         Debug.Log($"[Mission System] МИССИЯ ВЫПОЛНЕНА! Получено: ${reward}.");
     }
 
 
-
-    // Вызывается MissionGiver'ом (Waypoint 1)
-    // Inventory requesterInventory - удален, так как не используется корректно
     public void GenerateNewMissions(List<Mission> customMissions)
     {
         if (CurrentState == MissionState.Active)
@@ -161,10 +132,8 @@ public class MissionManager : MonoBehaviour
 
         availableMissions.Clear();
 
-        // Копируем миссии, чтобы изменения в UI не влияли на исходный список
         foreach(var mission in customMissions)
         {
-             // Создаем копию миссии, чтобы не менять исходные данные
              Mission newMission = new Mission
              {
                  missionName = mission.missionName,

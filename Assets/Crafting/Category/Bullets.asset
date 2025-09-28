@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5b93548d15879429e9ef7414fee93a, type: 3}
+  m_Name: Bullets
+  m_EditorClassIdentifier: 
+  categoryName: "\u041F\u0430\u0442\u0440\u043E\u043D\u044B"
+  categoryIcon: {fileID: 21300000, guid: 6771a1c6717363c438128b825da7bb03, type: 3}
+  maxLevel: 3
+  currentLevel: 2
+  currentEXP: 150
+  expToNextLevel: 400
+  availableItems:
+  - itemName: "\u0414\u0440\u043E\u0431\u044C"
+    itemIcon: {fileID: 21300000, guid: 63cdaec1d4b3bad46a9a3d8bb8dbc436, type: 3}
+    category: "\u041F\u0430\u0442\u0440\u043E\u043D\u044B"
+    requirements:
+    - materialName: "\u041F\u043E\u0440\u043E\u0445"
+      requiredAmount: 5
+    successChance: 99
+    criticalChance: 20
+    minCraftingLevel: 0

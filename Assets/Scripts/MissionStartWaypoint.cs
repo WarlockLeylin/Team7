@@ -1,4 +1,3 @@
-// В файле MissionStartWaypoint.cs
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -6,8 +5,6 @@ public class MissionStartWaypoint : MonoBehaviour
 {
     private MissionManager manager;
 
-    // Новая публичная ссылка на компонент UI Handler
-    // Перетащите сюда ваш UI-Canvas с прикрепленным скриптом MissionBoardUIHandler.cs
     public MissionBoardUIHandler uiHandler;
 
     private bool playerIsInZone = false;
@@ -30,10 +27,9 @@ public class MissionStartWaypoint : MonoBehaviour
         {
             if (uiHandler != null)
             {
-                uiHandler.GenerateMissionList(); // Обновляем список перед показом
+                uiHandler.GenerateMissionList();
                 uiHandler.gameObject.SetActive(true); // Активируем UI (Canvas)
 
-                // Отпускаем курсор для выбора
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
 
@@ -41,12 +37,10 @@ public class MissionStartWaypoint : MonoBehaviour
             }
         }
 
-        // Логика закрытия UI по кнопке ESC
         if (uiHandler != null && uiHandler.gameObject.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
             uiHandler.gameObject.SetActive(false);
 
-            // Блокируем курсор обратно
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
@@ -74,13 +68,11 @@ public class MissionStartWaypoint : MonoBehaviour
                 manager.SetMissionAvailable(false);
             }
 
-            // Скрываем UI при выходе из зоны
             if (uiHandler != null && uiHandler.gameObject.activeSelf)
             {
                 uiHandler.gameObject.SetActive(false);
             }
 
-            // Если игрок ушел, блокируем курсор
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

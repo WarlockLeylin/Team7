@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// Требует наличия Collider, настроенного как триггер
 [RequireComponent(typeof(Collider))]
 public class MissionCreatorTrigger : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class MissionCreatorTrigger : MonoBehaviour
     public GameObject creatorUIPanel;
     
     [Tooltip("Клавиша для открытия меню создания миссий.")]
-    public KeyCode interactionKey = KeyCode.K; // Используем K, чтобы избежать конфликта с E (по умолчанию)
+    public KeyCode interactionKey = KeyCode.K; 
 
     private bool playerIsInZone = false;
 
@@ -19,7 +18,6 @@ public class MissionCreatorTrigger : MonoBehaviour
             Debug.LogError("CreatorUIPanel не назначен в инспекторе MissionCreatorTrigger.cs!");
         }
         
-        // Убедимся, что панель изначально скрыта
         if (creatorUIPanel != null)
         {
             creatorUIPanel.SetActive(false);
@@ -28,15 +26,12 @@ public class MissionCreatorTrigger : MonoBehaviour
 
     void Update()
     {
-        // 1. Логика открытия UI
         if (playerIsInZone && Input.GetKeyDown(interactionKey))
         {
-            // Открываем, только если она не активна
             if (creatorUIPanel != null && !creatorUIPanel.activeSelf)
             {
                 creatorUIPanel.SetActive(true);
-                
-                // Отпускаем курсор для взаимодействия с UI
+
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
 
@@ -44,7 +39,6 @@ public class MissionCreatorTrigger : MonoBehaviour
             }
         }
         
-        // 2. Логика закрытия UI по кнопке ESC (стандартное поведение)
         if (creatorUIPanel != null && creatorUIPanel.activeSelf && (Input.GetKeyDown(KeyCode.Escape)))
         {
             CloseCreatorUI();
@@ -67,7 +61,6 @@ public class MissionCreatorTrigger : MonoBehaviour
             playerIsInZone = false;
             Debug.Log("Подсказка скрыта.");
             
-            // Если игрок уходит, закрываем UI для предотвращения ошибок
             if (creatorUIPanel != null && creatorUIPanel.activeSelf)
             {
                 CloseCreatorUI();
@@ -79,7 +72,6 @@ public class MissionCreatorTrigger : MonoBehaviour
     {
         creatorUIPanel.SetActive(false);
         
-        // Блокируем курсор, чтобы игрок мог снова двигаться
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Debug.Log("UI создания миссий закрыт.");
