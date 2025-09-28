@@ -19,7 +19,11 @@ public class CraftingUIHandler : MonoBehaviour
 
     void Awake()
     {
-        manager = CraftingManager.Instance;
+        if (manager == null)
+        {
+            manager = FindObjectOfType<CraftingManager>();
+        }
+
         if (manager == null)
         {
             Debug.LogError("CraftingManager не найден в сцене!");
